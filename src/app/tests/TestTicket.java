@@ -1,4 +1,4 @@
-package app;
+package app.tests;
 
 import app.domain.OrdenDeCompra;
 import app.domain.MedioPago;
