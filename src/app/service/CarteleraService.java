@@ -48,9 +48,9 @@ public class CarteleraService {
      */
     private void cargarFuncionesIniciales() {
         cartelera.agregarFuncion(new Funcion(peliculas.get(0), "Viernes", "20:00", "Sala 1", 5000.0));
-        cartelera.agregarFuncion(new Funcion(peliculas.get(1), "Sabado", "17:00", "Sala 2", 4800.0));
-        cartelera.agregarFuncion(new Funcion(peliculas.get(2), "Domingo", "14:00", "Sala 3", 5100.0));
-        cartelera.agregarFuncion(new Funcion(peliculas.get(3), "Domingo", "22:00", "Sala 1", 5200.0));
+        cartelera.agregarFuncion(new Funcion(peliculas.get(1), "Sabado", "17:00", "Sala 2", 5000.0));
+        cartelera.agregarFuncion(new Funcion(peliculas.get(2), "Domingo", "14:00", "Sala 3", 5000.0));
+        cartelera.agregarFuncion(new Funcion(peliculas.get(3), "Domingo", "22:00", "Sala 1", 5000.0));
         cartelera.agregarFuncion(new Funcion(peliculas.get(4), "Lunes", "19:00", "Sala 2", null)); // Usa precio por defecto
     }
     
