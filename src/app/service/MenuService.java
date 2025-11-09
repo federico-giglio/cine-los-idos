@@ -5,11 +5,9 @@ import app.domain.*;
 import java.util.List;
 
 /**
- * 
- * Servicio (Clase) que orquesta todo el flujo de la aplicación. Es llamado desde el main
- * 
- **/
-
+ * Servicio principal que coordina el flujo completo de la aplicacion de cine.
+ * Gestiona la interaccion del usuario con todos los modulos del sistema.
+ */
 public class MenuService {
     private CarteleraService carteleraService;
     private CompraService compraService;
@@ -30,16 +28,16 @@ public class MenuService {
         this.ordenActual = new OrdenDeCompra();
     }
     
-     /**
-     * 
-     * Metodo que llama al constructor mostrarBienvenida y detecta el input ingresado por el usuario.
-     * 
-     * */
-    
+    /**
+     * Punto de entrada principal del servicio de menu.
+     * Inicia el flujo interactivo y maneja la navegacion entre opciones.
+     */
     public void iniciar() {
         mostrarBienvenida();
+        Input.leerTexto("Presione Enter para continuar al menu principal...");
         
         while (true) {
+            limpiarPantalla();
             int opcion = mostrarMenuPrincipal();
             
             switch (opcion) {
@@ -59,135 +57,110 @@ public class MenuService {
                     procesarPagoYMostrarTicket();
                     break;
                 case 6:
-                    System.out.println("¡Gracias por usar Cine Los Idos! Hasta pronto.");
+                    System.out.println("Gracias por usar Cine Los Idos! Hasta pronto.");
                     return;
                 default:
-                    System.out.println("Opción no válida.");
+                    System.out.println("Opcion no valida.");
             }
             Input.leerTexto("Presione Enter para continuar...");
         }
     }
     
     /**
-     * 
-     * Metodo que muestra el menu principal.
-     * 
-     * */
-    
+     * Presenta el menu principal con opciones numeradas.
+     * Centra visualmente el titulo para mejor presentacion.
+     */
     private int mostrarMenuPrincipal() {
-        System.out.println("\n" + "=".repeat(40));
-        System.out.println("          CINE LOS IDOS");
-        System.out.println("=".repeat(40));
+        System.out.println("=".repeat(50));
+        System.out.println(centrarTexto("CINE LOS IDOS", 50));
+        System.out.println("=".repeat(50));
         System.out.println("1. Ver Cartelera");
         System.out.println("2. Comprar Tickets");
         System.out.println("3. Elegir Asientos");
         System.out.println("4. Combos y Promociones");
         System.out.println("5. Pago y Ticket Final");
         System.out.println("6. Salir");
-        System.out.println("=".repeat(40));
+        System.out.println("=".repeat(50));
         
-        return Input.leerEntero("Seleccione una opción (1-6)");
+        return Input.leerEntero("Seleccione una opcion (1-6)");
     }
     
-     /**
-     * 
-     * Metodo que muestra la cartelera luminosa (no la pude hacer parpadear)
-     * 
-     * */
-    
+    /**
+     * Muestra pantalla de bienvenida al iniciar la aplicacion.
+     * Utiliza formato centrado para mejor presentacion visual.
+     */
     private void mostrarBienvenida() {
-        System.out.println("✨".repeat(50));
-        System.out.println("          BIENVENIDO A CINE LOS IDOS");
-        System.out.println("✨".repeat(50));
+        limpiarPantalla();
+        System.out.println("=".repeat(50));
+        System.out.println(centrarTexto("BIENVENIDO A CINE LOS IDOS", 50));
+        System.out.println("=".repeat(50));
         System.out.println();
     }
     
-     /**
-     * 
-     * Metodo que llama al constructor mostrarCartelera desde la clase carteleraService y presenta el mensaje de la cartelera
-     * 
-     * */
-    
+    /**
+     * Muestra la cartelera completa con todas las funciones disponibles.
+     * Delega la visualizacion al servicio especializado.
+     */
     private void verCartelera() {
-        System.out.println("\n🎬 CARTELERA DISPONIBLE:");
+        System.out.println("\nCARTELERA DISPONIBLE:");
         carteleraService.mostrarCartelera();
     }
     
-     /**
-     * 
-     * Metodo que permite elegir funcion y cantidad de tickets llamando a diferentes constructores de la clase carteleraservice y compraservice
-     * Obtiene el numero total de funciones disponibles en la cartelera.
-     * Obtiene una funcion especifica de la cartelera por su indice.
-     * Inicializa una nueva orden de compra con los datos básicos.
-     * Obtiene un resumen detallado del estado actual de la compra.
-     * 
-     * */    
-    
+    /**
+     * Proceso de compra de tickets: seleccion de funcion y cantidad.
+     * Valida entradas y actualiza la orden de compra actual.
+     */
     private void comprarTickets() {
-        System.out.println("\n🎟️  COMPRA DE TICKETS");
+        System.out.println("\nCOMPRA DE TICKETS");
         
-        // Muestra nuevamente la cartelera para guiar en la compra del ticket llamando al constructor mostrarCartelera desde la clase carteleraService.
-     
         carteleraService.mostrarCartelera();
         
-        // Seleccionar función verificando la disponibilidad llamando al constructor getTotalFunciones
         int totalFunciones = carteleraService.getTotalFunciones();
         if (totalFunciones == 0) {
             System.out.println("No hay funciones disponibles.");
             return;
         }
         
-        int opcionFuncion = Input.leerEntero("Seleccione una función (1-" + totalFunciones + ")");
+        int opcionFuncion = Input.leerEntero("Seleccione una funcion (1-" + totalFunciones + ")");
         Funcion funcion = carteleraService.obtenerFuncion(opcionFuncion - 1);
         
         if (funcion == null) {
-            System.out.println("❌ Función no válida.");
+            System.out.println("Funcion no valida.");
             return;
         }
         
-        // Seleccionar cantidad de tickets condicionando un maximo y minimo
-        int cantidadTickets = Input.leerEntero("¿Cuántos tickets desea? (1-10)");
+        int cantidadTickets = Input.leerEntero("Cuantos tickets desea? (1-10)");
         if (cantidadTickets < 1 || cantidadTickets > 10) {
-            System.out.println("❌ Cantidad no válida. Debe ser entre 1 y 10.");
+            System.out.println("Cantidad no valida. Debe ser entre 1 y 10.");
             return;
         }
         
-        // Iniciar compra llamando al constructor iniciarCompra desde la clase compraservice
         ordenActual = compraService.iniciarCompra(funcion, cantidadTickets);
-        System.out.println("✅ Tickets agregados a la orden.");
+        System.out.println("Tickets agregados a la orden.");
         
-        // Mouestra el resumen parcial de la compra
         System.out.println("\n" + compraService.obtenerResumenCompra(ordenActual));
     }
     
-     /**
-     * 
-     * Metodo que muestra la lista de asientos llamando a diferentes contructores de las clases compraservice y asientosservice
-     * Verifica si la orden esta lista para proceder a la siguiente etapa.
-     * Valida que haya suficientes asientos libres para la cantidad solicitada.
-     * Obtiene la cantidad actual de asientos libres en la sala.
-     * Reserva los asientos
-     * 
-     * */    
-    
+    /**
+     * Gestiona la seleccion de asientos mostrando mapa de disponibilidad.
+     * Valida que haya suficientes asientos libres antes de proceder.
+     */
     private void elegirAsientos() {
         if (!compraService.estaListaParaAsientos(ordenActual)) {
-            System.out.println("❌ Primero debe seleccionar una función y cantidad de tickets.");
+            System.out.println("Primero debe seleccionar una funcion y cantidad de tickets.");
             return;
         }
         
-        System.out.println("\n💺 SELECCIÓN DE ASIENTOS");
+        System.out.println("\nSELECCION DE ASIENTOS");
         
-        // Verificar disponibilidad
         if (!asientosService.tieneAsientosSuficientes(ordenActual.getCantidadTickets())) {
-            System.out.println("❌ No hay suficientes asientos disponibles.");
+            System.out.println("No hay suficientes asientos disponibles.");
             return;
         }
         
         System.out.println("Asientos disponibles: " + asientosService.getAsientosDisponibles());
         mostrarMapaAsientos();
         
-        // Reservar asientos
         for (int i = 0; i < ordenActual.getCantidadTickets(); i++) {
             boolean asientoValido = false;
             while (!asientoValido) {
@@ -196,24 +169,22 @@ public class MenuService {
                 int columna = Input.leerEntero("Asiento (1-8)");
                 
                 if (asientosService.reservar(ordenActual, fila, columna)) {
-                    System.out.println("✅ Asiento reservado: Fila " + fila + ", Asiento " + columna);
+                    System.out.println("Asiento reservado: Fila " + fila + ", Asiento " + columna);
                     asientoValido = true;
                 } else {
-                    System.out.println("❌ Asiento ocupado o inválido. Intente otro.");
+                    System.out.println("Asiento ocupado o invalido. Intente otro.");
                 }
             }
         }
         
-        System.out.println("✅ Todos los asientos han sido reservados.");
+        System.out.println("Todos los asientos han sido reservados.");
         System.out.println("\n" + compraService.obtenerResumenCompra(ordenActual));
     }
     
-     /**
-     * 
-     * Metodo que crea el mapa (matriz) de los asientos disponibles y ocupados
-     * 
-     * */    
-    
+    /**
+     * Muestra representacion visual de la sala con asientos disponibles/ocupados.
+     * Utiliza matriz 5x8 con simbolos para indicar estado de cada asiento.
+     */
     private void mostrarMapaAsientos() {
         System.out.println("\n   Mapa de Asientos:");
         System.out.println("    1   2   3   4   5   6   7   8");
@@ -229,91 +200,130 @@ public class MenuService {
         System.out.println("[-] Libre  [*] Ocupado");
     }
     
-     /**
-     * 
-     * Metodo que muestra los combos y promociones llamando a diferentes constructores de las clases compraservice y checkoutservice
-     * Valida que todos los asientos reservados correspondan a la cantidad de tickets.
-     * Proporciona la lista de todos los combos disponibles en el cine.
-     * Registra el combo seleccionado por el usuario en su orden de compra.
-     * Proporciona la lista de medios de pago aceptados por el cine.
-     * Registra el medio de pago seleccionado por el usuario en su orden.
-     * Obtiene un resumen detallado del estado actual de la compra (pero mas actualizado).
-     * 
-     * */    
-    
+    /**
+     * Gestiona seleccion de combos de comida y medios de pago disponibles.
+     * Aplica descuentos segun el medio de pago seleccionado.
+     */
     private void aplicarCombosPromociones() {
         if (!compraService.validarAsientos(ordenActual)) {
-            System.out.println("❌ Primero debe seleccionar los asientos.");
+            System.out.println("Primero debe seleccionar los asientos.");
             return;
         }
-        
-        System.out.println("\n🍿 COMBOS Y PROMOCIONES");
-        
-        // Seleccionar combo
+
+        System.out.println("\nCOMBOS Y PROMOCIONES");
+
+        // Seleccionar combo con validacion
         List<Combo> combos = checkoutService.combosDisponibles();
         System.out.println("\nCombos disponibles:");
         for (int i = 0; i < combos.size(); i++) {
             System.out.println((i + 1) + ". " + combos.get(i));
         }
-        
+
         int opcionCombo = Input.leerEntero("Seleccione un combo (1-" + combos.size() + ")");
         if (opcionCombo > 0 && opcionCombo <= combos.size()) {
             checkoutService.elegirCombo(ordenActual, combos.get(opcionCombo - 1));
-            System.out.println("✅ Combo seleccionado: " + combos.get(opcionCombo - 1).getNombre());
+            System.out.println("Combo seleccionado: " + combos.get(opcionCombo - 1).getNombre());
+        } else {
+            System.out.println("Opcion de combo no valida. Continuando sin combo.");
         }
-        
-        // Seleccionar medio de pago
+
+        // Seleccionar medio de pago con validacion
         List<MedioPago> mediosPago = checkoutService.mediosPagoDisponibles();
         System.out.println("\nMedios de pago disponibles:");
         for (int i = 0; i < mediosPago.size(); i++) {
             System.out.println((i + 1) + ". " + mediosPago.get(i).getNombre());
         }
-        
+
         int opcionPago = Input.leerEntero("Seleccione medio de pago (1-" + mediosPago.size() + ")");
         if (opcionPago > 0 && opcionPago <= mediosPago.size()) {
             checkoutService.elegirMedioPago(ordenActual, mediosPago.get(opcionPago - 1));
-            System.out.println("✅ Medio de pago seleccionado: " + mediosPago.get(opcionPago - 1).getNombre());
+            System.out.println("Medio de pago seleccionado: " + mediosPago.get(opcionPago - 1).getNombre());
+        } else {
+            System.out.println("X Opcion de medio de pago no valida. Debe seleccionar un medio de pago... Volviendo al menú principal... Vuelva a intentarlo... X");
+            return; // Importante: si no selecciona medio de pago, no puede continuar
         }
-        
-        // Mostrar resumen con totales
+
         System.out.println("\n" + compraService.obtenerResumenCompra(ordenActual));
-        System.out.println("💰 Total a pagar: $" + ordenActual.calcularTotal());
+        System.out.println("Total a pagar: $" + ordenActual.calcularTotal());
     }
     
-     /**
-     * 
-     * Metodo que muestra el tiquet final de la compra llamando a diferentes constructores de las Clases compraservice
-     * Verifica si la orden esta lista para proceder al pago.
-     * Procesa el pago.
-     * Muestra el ticket.
-     * 
-     * */    
-    
+    /**
+     * Procesa el pago final y genera el ticket de compra. Incluye pausas para
+     * mejor experiencia de usuario al mostrar el ticket.
+     */
     private void procesarPagoYMostrarTicket() {
         if (!compraService.estaListaParaPago(ordenActual)) {
-            System.out.println("❌ Complete todos los pasos anteriores antes del pago.");
+            System.out.println("Complete todos los pasos anteriores antes del pago.");
             System.out.println("\n" + compraService.obtenerResumenCompra(ordenActual));
             return;
         }
-        
-        System.out.println("\n💳 PROCESANDO PAGO");
+
+        System.out.println("\nPROCESANDO PAGO");
         System.out.println("Total a pagar: $" + ordenActual.calcularTotal());
-        
-        // Procesar pago
+
+        // Simulacion de procesamiento con mas tiempo
+        System.out.print("Procesando");
+        for (int i = 0; i < 3; i++) {
+            try {
+                Thread.sleep(1000); //espera 1 seg en cada punto
+                System.out.print(".");
+            } catch (InterruptedException e) {
+            }
+        }
+        System.out.println();
+
         if (pagoService.procesar(ordenActual)) {
-            System.out.println("✅ Pago procesado exitosamente!");
-            
-            // Mostrar ticket
+            System.out.println("Pago procesado exitosamente!");
+
+            System.out.println("\nGenerando tu ticket...");
+            try {
+                Thread.sleep(3000); //espera 3 seg para simular la devolución de un ticket
+            } catch (InterruptedException e) {
+            }
+
             System.out.println("\n" + "=".repeat(50));
-            System.out.println("           TICKET DE COMPRA");
+            System.out.println(centrarTexto("TICKET DE COMPRA", 50));
             System.out.println("=".repeat(50));
             System.out.println(formateoService.formatearTicket(ordenActual));
-            
-            // Reiniciar para nueva compra
+
             ordenActual = new OrdenDeCompra();
             asientosService.generarSalaNueva();
+
+            System.out.println("\n" + "=".repeat(50));
+            System.out.println("Compra finalizada exitosamente!");
         } else {
-            System.out.println("❌ Error en el procesamiento del pago.");
+            System.out.println("Error en el procesamiento del pago.");
         }
+    }
+    
+    /**
+     * Limpia la pantalla de consola para mejor legibilidad.
+     * Compatible con Windows y sistemas Unix/Linux.
+     */
+    private void limpiarPantalla() {
+        try {
+            if (System.getProperty("os.name").contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+        } catch (Exception e) {
+            for (int i = 0; i < 30; i++) {
+                System.out.println();
+            }
+        }
+    }
+    
+    /**
+     * Centra un texto dentro de un ancho especifico agregando espacios.
+     * 
+     * @param texto Texto que se desea centrar
+     * @param ancho Ancho total deseado para el texto centrado
+     * @return Cadena de texto centrada con espacios
+     */
+    private String centrarTexto(String texto, int ancho) {
+        int espacios = (ancho - texto.length()) / 2;
+        return " ".repeat(Math.max(0, espacios)) + texto;
     }
 }

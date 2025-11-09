@@ -20,8 +20,8 @@ public class Funcion {
         
         this.pelicula = pelicula;
         this.fecha = (fecha != null && !fecha.trim().isEmpty()) ? fecha.trim() : "Fecha no especificada"; //Si la fecha no es null o vacía, la usamos. Sino asignamos un string por defecto
-        this.horario = (horario != null && !fecha.trim().isEmpty()) ? horario.trim() : "Horario no especificado"; //Si el horario no es null o vacío, la usamos. Sino asignamos un string por defecto
-        this.sala = (sala != null && !fecha.trim().isEmpty()) ? sala.trim() : "Sala no especificada"; // Si la sala no es null o vacía, la usamos. Sino asignamos un string por defecto
+        this.horario = (horario != null && !horario.trim().isEmpty()) ? horario.trim() : "Horario no especificado";  //Si el horario no es null o vacío, la usamos. Sino asignamos un string por defecto
+        this.sala = (sala != null && !sala.trim().isEmpty()) ? sala.trim() : "Sala no especificada"; // Si la sala no es null o vacía, la usamos. Sino asignamos un string por defecto
         //Para el precio vamos a establecer un valor por defecto de 5000 en caso de que sea nulo o menor o igual a 0.
         double precioBase = 5000.0;
         this.precioTicket = (precioTicket != null && precioTicket >= 0 ) ? precioTicket : precioBase; 
