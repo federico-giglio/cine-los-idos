@@ -96,7 +96,8 @@ public class CompraService {
         }
 
         StringBuilder resumen = new StringBuilder();
-        resumen.append("=== RESUMEN DE TU COMPRA ===\n");
+        //                            ===============================================
+        resumen.append("\n========= RESUMEN PARCIAL DE TU COMPRA =========\n");
 
         // Informacion de la función
         if (orden.getFuncion() != null) {
@@ -105,7 +106,7 @@ public class CompraService {
             resumen.append("Horario: ").append(orden.getFuncion().getHorario()).append("\n");
             resumen.append("Sala: ").append(orden.getFuncion().getSala()).append("\n");
         } else {
-            resumen.append("Pelicula: No seleccionada\n");
+            resumen.append("Pelicula: ***No seleccionada***\n");
         }
 
         // Informacion de tickets y asientos
@@ -114,7 +115,7 @@ public class CompraService {
         if (!orden.getAsientos().isEmpty()) {
             resumen.append("Asientos: ").append(orden.getAsientos()).append("\n");
         } else {
-            resumen.append("Asientos: Por seleccionar\n");
+            resumen.append("Asientos: ***Por seleccionar***\n");
         }
 
         // Informacion de combo
@@ -122,14 +123,14 @@ public class CompraService {
             resumen.append("Combo: ").append(orden.getCombo().getNombre())
                    .append(" ($").append(orden.getCombo().getPrecio()).append(")\n");
         } else {
-            resumen.append("Combo: No seleccionado\n");
+            resumen.append("Combo: ***No seleccionado***\n");
         }
 
         // Informacion de medio de pago
         if (orden.getMedioPago() != null) {
             resumen.append("Medio de pago: ").append(orden.getMedioPago().getNombre()).append("\n");
         } else {
-            resumen.append("Medio de pago: Por seleccionar\n");
+            resumen.append("Medio de pago: ***Por seleccionar***\n");
         }
 
         // Total calculado

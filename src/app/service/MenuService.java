@@ -37,7 +37,7 @@ public class MenuService {
         Input.leerTexto("Presione Enter para continuar al menu principal...");
         
         while (true) {
-            limpiarPantalla();
+            //limpiarPantalla();
             int opcion = mostrarMenuPrincipal();
             
             switch (opcion) {
@@ -57,7 +57,13 @@ public class MenuService {
                     procesarPagoYMostrarTicket();
                     break;
                 case 6:
-                    System.out.println("Gracias por usar Cine Los Idos! Hasta pronto.");
+                    System.out.println("\n");
+                    System.out.println("\n    ==========================================");
+                    System.out.println("==================================================");
+                    System.out.println(" GRACIAS POR VISITAR CINE LOS IDOS! Hasta pronto!");
+                    System.out.println("==================================================");
+                    System.out.println("    ==========================================");
+                    System.out.println("\n");
                     return;
                 default:
                     System.out.println("Opcion no valida.");
@@ -71,8 +77,9 @@ public class MenuService {
      * Centra visualmente el titulo para mejor presentacion.
      */
     private int mostrarMenuPrincipal() {
+        System.out.println("\n");
         System.out.println("=".repeat(50));
-        System.out.println(centrarTexto("CINE LOS IDOS", 50));
+        System.out.println(centrarTexto("CINE LOS IDOS - Menu Principal", 50));
         System.out.println("=".repeat(50));
         System.out.println("1. Ver Cartelera");
         System.out.println("2. Comprar Tickets");
@@ -82,7 +89,7 @@ public class MenuService {
         System.out.println("6. Salir");
         System.out.println("=".repeat(50));
         
-        return Input.leerEntero("Seleccione una opcion (1-6)");
+        return Input.leerEntero("Seleccione una opcion (1-6)");      
     }
     
     /**
@@ -90,10 +97,12 @@ public class MenuService {
      * Utiliza formato centrado para mejor presentacion visual.
      */
     private void mostrarBienvenida() {
-        limpiarPantalla();
+        //limpiarPantalla();
+        System.out.println("\n    ==========================================");
         System.out.println("=".repeat(50));
         System.out.println(centrarTexto("BIENVENIDO A CINE LOS IDOS", 50));
         System.out.println("=".repeat(50));
+          System.out.println("    ==========================================");
         System.out.println();
     }
     
@@ -102,7 +111,7 @@ public class MenuService {
      * Delega la visualizacion al servicio especializado.
      */
     private void verCartelera() {
-        System.out.println("\nCARTELERA DISPONIBLE:");
+        //System.out.println("\nCARTELERA DISPONIBLE:");
         carteleraService.mostrarCartelera();
     }
     
@@ -111,8 +120,9 @@ public class MenuService {
      * Valida entradas y actualiza la orden de compra actual.
      */
     private void comprarTickets() {
-        System.out.println("\nCOMPRA DE TICKETS");
-        
+        System.out.println("\n================================================");
+        System.out.println("COMPRA DE TICKETS");
+        System.out.println("================================================");
         carteleraService.mostrarCartelera();
         
         int totalFunciones = carteleraService.getTotalFunciones();
@@ -151,14 +161,16 @@ public class MenuService {
             return;
         }
         
-        System.out.println("\nSELECCION DE ASIENTOS");
+        System.out.println("\n================================================");
+        System.out.println("SELECCION DE ASIENTOS");
+        System.out.println("================================================");
         
         if (!asientosService.tieneAsientosSuficientes(ordenActual.getCantidadTickets())) {
             System.out.println("No hay suficientes asientos disponibles.");
             return;
         }
         
-        System.out.println("Asientos disponibles: " + asientosService.getAsientosDisponibles());
+        System.out.println("\nAsientos disponibles: " + asientosService.getAsientosDisponibles());
         mostrarMapaAsientos();
         
         for (int i = 0; i < ordenActual.getCantidadTickets(); i++) {
@@ -177,7 +189,7 @@ public class MenuService {
             }
         }
         
-        System.out.println("Todos los asientos han sido reservados.");
+        System.out.println("\nTus asientos han sido reservados con éxito!");
         System.out.println("\n" + compraService.obtenerResumenCompra(ordenActual));
     }
     
@@ -186,7 +198,7 @@ public class MenuService {
      * Utiliza matriz 5x8 con simbolos para indicar estado de cada asiento.
      */
     private void mostrarMapaAsientos() {
-        System.out.println("\n   Mapa de Asientos:");
+        System.out.println("\n        Ocupación de la Sala:\n");
         System.out.println("    1   2   3   4   5   6   7   8");
         
         for (int i = 0; i < 5; i++) {
@@ -197,7 +209,7 @@ public class MenuService {
             }
             System.out.println();
         }
-        System.out.println("[-] Libre  [*] Ocupado");
+        System.out.println(" \n        [-] Libre [*] Ocupado");
     }
     
     /**
@@ -209,9 +221,9 @@ public class MenuService {
             System.out.println("Primero debe seleccionar los asientos.");
             return;
         }
-
-        System.out.println("\nCOMBOS Y PROMOCIONES");
-
+        System.out.println("\n================================================");  
+        System.out.println("COMBOS Y PROMOCIONES");
+        System.out.println("================================================");
         // Seleccionar combo con validacion
         List<Combo> combos = checkoutService.combosDisponibles();
         System.out.println("\nCombos disponibles:");
@@ -219,7 +231,7 @@ public class MenuService {
             System.out.println((i + 1) + ". " + combos.get(i));
         }
 
-        int opcionCombo = Input.leerEntero("Seleccione un combo (1-" + combos.size() + ")");
+        int opcionCombo = Input.leerEntero("\nSeleccione un combo (1-" + combos.size() + ")");
         if (opcionCombo > 0 && opcionCombo <= combos.size()) {
             checkoutService.elegirCombo(ordenActual, combos.get(opcionCombo - 1));
             System.out.println("Combo seleccionado: " + combos.get(opcionCombo - 1).getNombre());
@@ -234,7 +246,7 @@ public class MenuService {
             System.out.println((i + 1) + ". " + mediosPago.get(i).getNombre());
         }
 
-        int opcionPago = Input.leerEntero("Seleccione medio de pago (1-" + mediosPago.size() + ")");
+        int opcionPago = Input.leerEntero("\nSeleccione medio de pago (1-" + mediosPago.size() + ")");
         if (opcionPago > 0 && opcionPago <= mediosPago.size()) {
             checkoutService.elegirMedioPago(ordenActual, mediosPago.get(opcionPago - 1));
             System.out.println("Medio de pago seleccionado: " + mediosPago.get(opcionPago - 1).getNombre());
@@ -300,7 +312,7 @@ public class MenuService {
      * Limpia la pantalla de consola para mejor legibilidad.
      * Compatible con Windows y sistemas Unix/Linux.
      */
-    private void limpiarPantalla() {
+    /*private void limpiarPantalla() {
         try {
             if (System.getProperty("os.name").contains("Windows")) {
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -313,7 +325,7 @@ public class MenuService {
                 System.out.println();
             }
         }
-    }
+    }*/
     
     /**
      * Centra un texto dentro de un ancho especifico agregando espacios.

@@ -36,9 +36,9 @@ public class Cartelera {
             return;
         }
 
-        System.out.println("\n===============================================");
-        System.out.println("                CARTELERA DEL CINE             ");
-        System.out.println("===============================================\n");
+        System.out.println("\n================================================");
+        System.out.println("               CARTELERA DEL CINE             ");
+        System.out.println("================================================\n");
 
         int contador = 1;
         //Ahora hacemnos un ciclo for each para recorrer automáticamente toda la lista de funciones que tenemos en la clase Cartelera.
@@ -47,7 +47,7 @@ public class Cartelera {
             contador++;
         }
 
-        System.out.println("\n===============================================");
+        System.out.println("\n================================================");
     }
     
 }
