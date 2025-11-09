@@ -53,7 +53,7 @@ public class AsientosService {
      */
     public boolean reservar(OrdenDeCompra orden , int fila, int columna){
         if (salaActual.reservar(fila, columna)){
-           // Convertir coordenadas numericas a formato de asiento (ej: "A1", "B2")
+            // Muestra en el resumen los asientos reservados con el siguiente formato: "Fila: (n° de fila) - Asiento:(n° de columna)
            String asiento = convertirCoordenadasAAsiento(fila, columna);
            orden.agregarAsiento(asiento);            
            return true;
@@ -63,15 +63,14 @@ public class AsientosService {
 
     /**
      * Convierte coordenadas numericas de fila y columna a formato de asiento.
-     * Ejemplo: fila=1, columna=1 -> "A1"; fila=2, columna=3 -> "B3"
+     * Ejemplo: fila=1, columna=1 -> "Fila:1-Asiento:1"
      * 
      * @param fila Numero de fila (1-based)
      * @param columna Numero de columna (1-based)
      * @return String representando el asiento en formato letra-numero
      */
     private String convertirCoordenadasAAsiento(int fila, int columna) {
-        char letraFila = (char) ('A' + (fila - 1));
-        return letraFila + Integer.toString(columna);
+        return "Fila:"+ fila + "-" + "Asiento:" + columna;
     }
 
     /**
